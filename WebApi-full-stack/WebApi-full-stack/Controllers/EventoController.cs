@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.ValueGeneration;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
+using System.Linq;
+using WebApi_full_stack.Data;
 using WebApi_full_stack.Model;
 
 namespace WebApi_full_stack.Controllers
@@ -11,27 +11,19 @@ namespace WebApi_full_stack.Controllers
     [Route("[controller]")]
     public class EventoController : ControllerBase
     {
+        private readonly DataContext _context;
         private readonly ILogger<EventoController> _logger;
 
-        public EventoController(ILogger<EventoController> logger)
+        public EventoController(ILogger<EventoController> logger, DataContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         [HttpGet]
         public ActionResult<IEnumerable<Evento>> Get()
         {
-            return new Evento[]
-            {
-                new Evento()
-                {
-                Id = Guid.NewGuid(),
-                CargaHoraria=20,
-                Cidade = "Valparaíso de Goiás",
-                Data = DateTime.Now.AddDays(7).ToString("dd/MM/yyyy"),
-                Nome = "Curso de Angular"
-                }
-            };
+            return _context.Eventos.ToList();
         }
     }
 }

@@ -9,5 +9,6 @@ namespace WebApi_full_stack.Model
         public string Cidade { get; set; }
         public string Data { get; set; }
         public int CargaHoraria { get; set; }
+        public string ImagemUrl { get; set; }
     }
 }
