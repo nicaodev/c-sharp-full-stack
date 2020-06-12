@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebApi_full_stack.Migrations
 {
-    public partial class init : Migration
+    public partial class inicio : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,15 +10,18 @@ namespace WebApi_full_stack.Migrations
                 name: "Eventos",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    EventoId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(nullable: true),
                     Cidade = table.Column<string>(nullable: true),
+                    Bairro = table.Column<string>(nullable: true),
                     Data = table.Column<string>(nullable: true),
-                    CargaHoraria = table.Column<int>(nullable: false)
+                    CargaHoraria = table.Column<int>(nullable: false),
+                    ImagemUrl = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Eventos", x => x.Id);
+                    table.PrimaryKey("PK_Eventos", x => x.EventoId);
                 });
         }
 
