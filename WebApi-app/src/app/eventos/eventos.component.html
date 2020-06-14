@@ -1,7 +1,40 @@
-<div *ngFor="let evento of eventos">
-Tema: {{evento.nome}}
-<br>
-Local: {{evento.cidade}}
-<hr>
+<div class="form-inline" action="">
+  <div class="form-group mb-2">
+    <label class="mr-2">Filtro:</label> <input type="text" class="form-control mr-2"
+    placeholder="Buscar" [(ngModel)]="filtroLista">
 
+  </div>
 </div>
+<h3>Filtro:{{filtroLista}} </h3>
+
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>id</th>
+      <th>Tema</th>
+      <th>Local</th>
+      <th>Data</th>
+      <th>Carga Horária</th>
+      <th>Lote</th>
+      <th>Opções</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="eventos && eventos.length">
+    <tr *ngFor="let evento of eventosFiltrados">
+      <td>{{evento.eventoId}}</td>
+      <td>{{evento.nome}}</td>
+      <td>{{evento.bairro}}, {{evento.cidade}}</td>
+      <td>{{evento.data}}</td>
+      <td>{{evento.cargaHoraria}}</td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+  <tfoot *ngIf="!eventos.length">
+    <tr>
+      <td colspan="7" class="text-center">
+        <h5>Nenhum evento encontrado.</h5>
+      </td>
+    </tr>
+  </tfoot>
+</table>
