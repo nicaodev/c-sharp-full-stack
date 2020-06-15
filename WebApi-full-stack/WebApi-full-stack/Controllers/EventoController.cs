@@ -5,8 +5,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebApi_full_stack.Data;
-using WebApi_full_stack.Model;
+using WebApi.Repository;
 
 namespace WebApi_full_stack.Controllers
 {
@@ -42,7 +41,7 @@ namespace WebApi_full_stack.Controllers
         { 
             try
             {
-                var results = await _context.Eventos.FirstOrDefaultAsync(x => x.EventoId == id);
+                var results = await _context.Eventos.FirstOrDefaultAsync(x => x.Id == id);
                 return Ok(results);
             }
             catch (System.Exception)
