@@ -18,8 +18,6 @@ namespace WebApi.Domain
 
         public List<Lote> Lotes { get; set; }
         public List<RedeSocial> RedesSociais { get; set; }
-        public List<PalestranteEvento> PalestrantesEventos{ get; set; }
-
-
+        public List<PalestranteEvento> PalestrantesEventos { get; set; }
     }
 }
