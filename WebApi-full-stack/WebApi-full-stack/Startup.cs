@@ -21,6 +21,7 @@ namespace WebApi_full_stack
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IRepository, Repository>();
             services.AddCors();
             services.AddControllers();
         }

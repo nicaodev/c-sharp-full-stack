@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace WebApi.Repository
         public Repository(DataContext context)
         {
             _context = context;
+            _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking; // same .AsNoTracking()
         }
         // GERAIS
         public void Add<T>(T entity) where T : class
@@ -40,7 +42,7 @@ namespace WebApi.Repository
             if (includePalestrantes)
                 query = query.Include(pe => pe.PalestrantesEventos).ThenInclude(p => p.Palestrante);
 
-            query = query.OrderByDescending(x => x.Data);
+            query = query.AsNoTracking().OrderByDescending(x => x.Data);
 
             return await query.ToArrayAsync();
         }
@@ -51,7 +53,7 @@ namespace WebApi.Repository
             if (includePalestrantes)
                 query = query.Include(pe => pe.PalestrantesEventos).ThenInclude(p => p.Palestrante);
 
-            query = query.OrderByDescending(x => x.Data).Where(x => x.Nome.ToLower().Contains(tema.ToLower()));
+            query = query.AsNoTracking().OrderByDescending(x => x.Data).Where(x => x.Nome.ToLower().Contains(tema.ToLower()));
 
             return await query.ToArrayAsync();
         }
@@ -62,7 +64,7 @@ namespace WebApi.Repository
             if (includePalestrantes)
                 query = query.Include(pe => pe.PalestrantesEventos).ThenInclude(p => p.Palestrante);
 
-            query = query.OrderByDescending(x => x.Data).Where(x => x.Id == id);
+            query = query.AsNoTracking().OrderByDescending(x => x.Data).Where(x => x.Id == id);
 
             return await query.FirstOrDefaultAsync();
         }
@@ -75,7 +77,7 @@ namespace WebApi.Repository
             if (includeEventos)
                 query = query.Include(pe => pe.PalestrantesEventos).ThenInclude(p => p.Evento);
 
-            query = query.Where(p=>p.Nome.ToLower().Contains(nome.ToLower()));
+            query = query.AsNoTracking().Where(p => p.Nome.ToLower().Contains(nome.ToLower()));
 
             return await query.ToArrayAsync();
         }
