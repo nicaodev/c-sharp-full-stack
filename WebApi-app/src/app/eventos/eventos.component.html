@@ -19,14 +19,14 @@
       <th>Opções</th>
     </tr>
   </thead>
-  <tbody *ngIf="eventos && eventos.length">
+  <tbody *ngIf="eventos && eventos?.length">
     <tr *ngFor="let evento of eventosFiltrados">
       <td>{{evento.eventoId}}</td>
       <td>{{evento.nome}}</td>
       <td>{{evento.bairro}}, {{evento.cidade}}</td>
       <td>{{evento.data}}</td>
       <td>{{evento.cargaHoraria}}</td>
-      <td></td>
+      <td>{{evento.lotes.nome}}</td>
       <td></td>
     </tr>
   </tbody>

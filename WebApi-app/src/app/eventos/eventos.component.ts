@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { EventoService } from '../services/evento.service';
+import { Evento } from '../models/Evento';
 
 @Component({
   selector: 'app-eventos',
@@ -9,7 +10,7 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 })
 export class EventosComponent implements OnInit {
 
-  _filtroLista: string;
+  _filtroLista = '';
   get filtroLista(): string {
     return this._filtroLista;
   }
@@ -18,28 +19,30 @@ export class EventosComponent implements OnInit {
     this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos;
   }
 
-  eventosFiltrados: any = [];
-  eventos: any = [];
-  constructor(private http: HttpClient) {}
+  eventosFiltrados: Evento[];
+  eventos: Evento[];
+  constructor(private eventoService: EventoService) {}
 
   ngOnInit() { // executa antes do HTML estar pronto.
     this.getEventos();
   }
 
-  filtrarEventos(filtrarPor: string): any {
+  filtrarEventos(filtrarPor: string): Evento[] {
     filtrarPor = filtrarPor.toLocaleLowerCase();
     return this.eventos.filter(
       evento => evento.nome.toLocaleLowerCase().indexOf(filtrarPor) !== -1
-    );
-  }
+      );
+    }
 
-  getEventos() {
-    this.http.get('https://localhost:44307/evento').subscribe(response => {
-    this.eventos = response;
-    console.log('1o response: ', response); // Visualizando o response no F12.
-  },
-  error => {
-    console.log(error);
-  });
-}
-}
+    getEventos() {
+      this.eventoService.getEvento().subscribe(
+        (_eventos: Evento[]) => {
+        this.eventos = _eventos;
+        this.eventosFiltrados = this.eventos;
+        console.log('1o response: ', _eventos); // Visualizando o response no F12.
+      },
+      error => {
+        console.log(error);
+      });
+    }
+  }
