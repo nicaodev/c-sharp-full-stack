@@ -21,12 +21,16 @@
   </thead>
   <tbody *ngIf="eventos && eventos?.length">
     <tr *ngFor="let evento of eventosFiltrados">
-      <td>{{evento.eventoId}}</td>
-      <td>{{evento.nome}}</td>
+      <td>{{evento.id}}</td>
+      <td>{{evento.nome | uppercase}}</td>
       <td>{{evento.bairro}}, {{evento.cidade}}</td>
-      <td>{{evento.data}}</td>
+      <td>{{evento.data | dateTime}}</td>
       <td>{{evento.cargaHoraria}}</td>
-      <td>{{evento.lotes.nome}}</td>
+      <td>
+        <div *ngIf="!evento.lotes?.length">Não informado.</div>
+        <div *ngIf="evento.lotes && evento.lotes?.length">{{evento.lotes[0].nome | uppercase}}</div>
+
+      </td>
       <td></td>
     </tr>
   </tbody>
