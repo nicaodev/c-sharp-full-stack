@@ -1,8 +1,14 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { EventoService } from '../services/evento.service';
 import { Evento } from '../models/Evento';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ptBrLocale } from 'ngx-bootstrap/locale';
+import {BsLocaleService } from 'ngx-bootstrap/datepicker';
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { template } from '@angular/core/src/render3';
+
+defineLocale('pt-br', ptBrLocale);
 
 @Component({
   selector: 'app-eventos',
@@ -12,14 +18,19 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 export class EventosComponent implements OnInit {
   eventosFiltrados: Evento[];
   eventos: Evento[];
-  modalRef: BsModalRef;
+  evento: Evento;
+  registerForm: FormGroup;
 
   _filtroLista = '';
 
   constructor(
     private eventoService: EventoService,
-    private modalService: BsModalService
-    ) {}
+    private modalService: BsModalService,
+    private fb: FormBuilder,
+    private localeService: BsLocaleService
+    ) {
+      this.localeService.use('pt-br');
+    }
 
     get filtroLista(): string {
       return this._filtroLista;
@@ -28,13 +39,45 @@ export class EventosComponent implements OnInit {
       this._filtroLista = value;
       this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos;
     }
-    openModal(template: TemplateRef<any>){
-      this.modalRef = this.modalService.show(template);
+    openModal(template: any){
+      // this.registerForm.reset();
+      template.show();
     }
 
     ngOnInit() { // executa antes do HTML estar pronto.
+      this.validation();
       this.getEventos();
     }
+
+    salvarAlteracao(template: any) {
+      if (this.registerForm.valid){
+        this.evento = Object.assign({}, this.registerForm.value);
+        console.log('antes de salvar', this.evento);
+        this.eventoService.postEvento(this.evento).subscribe(
+          (novoEvento: Event)=> {
+            console.log(novoEvento);
+            template.hide();
+            this.getEventos();
+          }, error => {
+            console.log(error );
+          }
+        );
+      }
+    }
+
+    validation() {
+      this.registerForm = this.fb.group({
+        nome: ['', [Validators.minLength(4), Validators.maxLength(50), Validators.required]],
+        cidade: ['', [Validators.required]],
+        data: ['', [Validators.required]],
+        bairro: ['', [Validators.required]],
+        cargaHoraria: ['', [Validators.required]],
+        telefone: ['', [Validators.required]],
+        email: ['', [Validators.email, Validators.required]],
+      });
+    }
+
+
 
     filtrarEventos(filtrarPor: string): Evento[] {
       filtrarPor = filtrarPor.toLocaleLowerCase();
