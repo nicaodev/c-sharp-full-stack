@@ -86,7 +86,7 @@ namespace WebApi_full_stack.Controllers
         }
         // PUT
 
-        [HttpPut]
+        [HttpPut("{EventoId}")]
         public async Task<IActionResult> Put(int EventoId, Evento model)
         {
             try
@@ -110,7 +110,7 @@ namespace WebApi_full_stack.Controllers
 
         // DELETE
 
-        [HttpDelete]
+        [HttpDelete("{EventoId}")]
         public async Task<IActionResult> Delete(int EventoId)
         {
             try
@@ -119,7 +119,7 @@ namespace WebApi_full_stack.Controllers
                 if (evento == null)
                     return NotFound();
 
-                _repo.Update(evento);
+                _repo.Delete(evento);
 
                 if (await _repo.SaveChangesAsync())
                     return Ok();
