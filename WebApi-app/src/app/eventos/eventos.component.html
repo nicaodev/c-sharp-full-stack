@@ -30,7 +30,8 @@
         <td>{{evento.id}}</td>
         <td>{{evento.nome | uppercase}}</td>
         <td>{{evento.bairro}}, {{evento.cidade}}</td>
-        <td>{{evento.data | dateTime}}</td>
+        <!-- <td>{{evento.data | dateTime }}</td> -->
+          <td>{{evento.data }}</td>
         <td>{{evento.cargaHoraria}}</td>
         <td>
           <div *ngIf="!evento.lotes?.length">Não informado.</div>

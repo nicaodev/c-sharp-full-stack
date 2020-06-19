@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Domain;
 using WebApi.Repository;
+using WebApi_full_stack.Dtos;
 
 namespace WebApi_full_stack.Controllers
 {
@@ -15,34 +15,41 @@ namespace WebApi_full_stack.Controllers
     public class EventoController : ControllerBase
     {
         private readonly IRepository _repo;
+        private readonly IMapper _mapper;
         private readonly ILogger<EventoController> _logger;
 
-        public EventoController(ILogger<EventoController> logger, IRepository repo)
+        public EventoController(ILogger<EventoController> logger, IRepository repo, IMapper mapper)
         {
             _logger = logger;
             _repo = repo;
+            _mapper = mapper;
         }
+
         // GET
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             try
             {
-                var results = await _repo.GetAllEventoAsync(true);
+                var eventos = await _repo.GetAllEventoAsync(true);
+
+                var results = _mapper.Map<IEnumerable<EventoDto>>(eventos);
                 return Ok(results);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco de Dados Falhou");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco de Dados Falhou {ex.Message}");
             }
         }
+
         // GET
         [HttpGet("{EventoId}")]
         public async Task<IActionResult> Get(int EventoId)
         {
             try
             {
-                var results = await _repo.GetAllEventoAsyncId(EventoId, true);
+                var evento = await _repo.GetAllEventoAsyncId(EventoId, true);
+                var results = _mapper.Map<EventoDto>(evento);
                 if (results == null)
                     return StatusCode(StatusCodes.Status404NotFound, "Não encontrado.");
                 return Ok(results);
@@ -52,6 +59,7 @@ namespace WebApi_full_stack.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco de Dados Falhou");
             }
         }
+
         // GET
         [HttpGet("getByTema/{tema}")]
         public async Task<IActionResult> Get(string tema)
@@ -66,6 +74,7 @@ namespace WebApi_full_stack.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco de Dados Falhou");
             }
         }
+
         // POST
         [HttpPost]
         public async Task<IActionResult> Post(Evento model)
@@ -84,6 +93,7 @@ namespace WebApi_full_stack.Controllers
 
             return BadRequest();
         }
+
         // PUT
 
         [HttpPut("{EventoId}")]
@@ -131,8 +141,5 @@ namespace WebApi_full_stack.Controllers
 
             return BadRequest();
         }
-
-
-
     }
 }
