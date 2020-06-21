@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace WebApi_full_stack.Dtos
+﻿namespace WebApi_full_stack.Dtos
 {
     public class RedeSocialDto
     {

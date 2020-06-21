@@ -1,9 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using WebApi.Domain;
 
@@ -12,28 +8,34 @@ namespace WebApi.Repository
     public class Repository : IRepository
     {
         private readonly DataContext _context;
+
         public Repository(DataContext context)
         {
             _context = context;
             _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking; // same .AsNoTracking()
         }
+
         // GERAIS
         public void Add<T>(T entity) where T : class
         {
             _context.Add(entity);
         }
+
         public void Update<T>(T entity) where T : class
         {
             _context.Update(entity);
         }
+
         public void Delete<T>(T entity) where T : class
         {
             _context.Remove(entity);
         }
+
         public async Task<bool> SaveChangesAsync()
         {
             return (await _context.SaveChangesAsync()) > 0;
         }
+
         // EVENTOS
         public async Task<Evento[]> GetAllEventoAsync(bool includePalestrantes = false)
         {
@@ -46,6 +48,7 @@ namespace WebApi.Repository
 
             return await query.ToArrayAsync();
         }
+
         public async Task<Evento[]> GetAllEventoAsyncNome(string tema, bool includePalestrantes)
         {
             IQueryable<Evento> query = _context.Eventos.Include(c => c.Lotes).Include(c => c.RedesSociais);
@@ -57,6 +60,7 @@ namespace WebApi.Repository
 
             return await query.ToArrayAsync();
         }
+
         public async Task<Evento> GetAllEventoAsyncId(int id, bool includePalestrantes = false)
         {
             IQueryable<Evento> query = _context.Eventos.Include(c => c.Lotes).Include(c => c.RedesSociais);
@@ -81,6 +85,7 @@ namespace WebApi.Repository
 
             return await query.ToArrayAsync();
         }
+
         public async Task<Palestrante> GetAllPalestranteAsyncId(int PalestranteId, bool includeEventos = false)
         {
             IQueryable<Palestrante> query = _context.Palestrantes.Include(c => c.RedesSociais);

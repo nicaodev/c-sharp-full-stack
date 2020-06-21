@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace WebApi.Domain
 {
@@ -9,14 +7,15 @@ namespace WebApi.Domain
     {
         public int Id { get; set; }
         public string Nome { get; set; }
+
         [Column(TypeName = "decimal(8,2)")]
         public decimal Preco { get; set; }
+
         public DateTime? DataInicio { get; set; }
         public DateTime? DataFim { get; set; }
         public int Quantidade { get; set; }
         public int EventoId { get; set; }
 
-        public Evento Evento { get;}
-
+        public Evento Evento { get; }
     }
 }
