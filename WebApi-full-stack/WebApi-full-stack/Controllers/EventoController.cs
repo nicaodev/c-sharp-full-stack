@@ -33,7 +33,7 @@ namespace WebApi_full_stack.Controllers
             {
                 var eventos = await _repo.GetAllEventoAsync(true);
 
-                var results = _mapper.Map<IEnumerable<EventoDto>>(eventos);
+                var results = _mapper.Map<EventoDto[]>(eventos);
                 return Ok(results);
             }
             catch (System.Exception ex)
@@ -66,7 +66,9 @@ namespace WebApi_full_stack.Controllers
         {
             try
             {
-                var results = await _repo.GetAllEventoAsyncNome(tema, true);
+                var eventos = await _repo.GetAllEventoAsyncNome(tema, true);
+                var results = _mapper.Map<EventoDto[]>(eventos);
+
                 return Ok(results);
             }
             catch (System.Exception)
@@ -77,14 +79,15 @@ namespace WebApi_full_stack.Controllers
 
         // POST
         [HttpPost]
-        public async Task<IActionResult> Post(Evento model)
+        public async Task<IActionResult> Post(EventoDto model)
         {
             try
             {
-                _repo.Add(model);
+                Evento evento = _mapper.Map<Evento>(model);
+                _repo.Add(evento);
 
                 if (await _repo.SaveChangesAsync())
-                    return Created($"api/evento/{model.Id}", model);
+                    return Created($"api/evento/{model.Id}", _mapper.Map<EventoDto>(model));
             }
             catch (System.Exception)
             {
@@ -97,7 +100,7 @@ namespace WebApi_full_stack.Controllers
         // PUT
 
         [HttpPut("{EventoId}")]
-        public async Task<IActionResult> Put(int EventoId, Evento model)
+        public async Task<IActionResult> Put(int EventoId, EventoDto model)
         {
             try
             {
@@ -105,10 +108,12 @@ namespace WebApi_full_stack.Controllers
                 if (evento == null)
                     return NotFound();
 
-                _repo.Update(model);
+                _mapper.Map(model, evento); // match model com evento(encontrado).
+
+                _repo.Update(evento);
 
                 if (await _repo.SaveChangesAsync())
-                    return Created($"api/evento/{model.Id}", model);
+                    return Created($"api/evento/{model.Id}", _mapper.Map<EventoDto>(evento));
             }
             catch (System.Exception)
             {
