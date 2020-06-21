@@ -42,7 +42,7 @@ namespace WebApi.Repository
             if (includePalestrantes)
                 query = query.Include(pe => pe.PalestrantesEventos).ThenInclude(p => p.Palestrante);
 
-            query = query.AsNoTracking().OrderBy(x => x.Data);
+            query = query.AsNoTracking().OrderBy(x => x.Id);
 
             return await query.ToArrayAsync();
         }
