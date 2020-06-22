@@ -20,7 +20,7 @@ namespace WebApi_full_stack.Dtos
         [EmailAddress]
         public string Email { get; set; }
 
-        [Range(1, 80, ErrorMessage = "No minímo 1h e no máximo 80h.")]
+        [Range(1, 80, ErrorMessage = "No mínimo de 1h e no máximo 80h totais.")]
         public int CargaHoraria { get; set; }
 
         public string ImagemURL { get; set; }
