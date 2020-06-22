@@ -6,14 +6,19 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 // Services
 import { EventoService } from './services/evento.service';
 // Componentes
 import { AppComponent } from './app.component';
 import { EventosComponent } from './eventos/eventos.component';
 import { NavComponent } from './nav/nav.component';
+import { PalestrantesComponent } from './palestrantes/palestrantes.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ContatosComponent } from './contatos/contatos.component';
+import { TituloComponent  } from './shared/titulo/titulo.component';
 // Pipes
 import { DateTimeFormatPipePipe } from './helpers/dateTimeFormatPipe.pipe';
 
@@ -22,23 +27,27 @@ import { DateTimeFormatPipePipe } from './helpers/dateTimeFormatPipe.pipe';
       AppComponent,
       EventosComponent,
       NavComponent,
-      DateTimeFormatPipePipe // Pipes personalizado
+      DateTimeFormatPipePipe, // Pipespersonalizado
+      PalestrantesComponent,
+      DashboardComponent,
+      ContatosComponent,
+      TituloComponent
    ],
    imports: [
       BrowserModule,
       AppRoutingModule,
-      BrowserAnimationsModule,
       BsDropdownModule.forRoot(),
       TooltipModule.forRoot(),
       ModalModule.forRoot(),
       BsDatepickerModule.forRoot(),
       ReactiveFormsModule,
-
-      HttpClientModule, // para requisições na webApi,
-      FormsModule
+      HttpClientModule, // pararequisições na webApi
+      FormsModule,
+      BrowserAnimationsModule,
+      ToastrModule.forRoot()
    ],
    providers: [
-     EventoService
+      EventoService
    ],
    bootstrap: [
       AppComponent

@@ -6,7 +6,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
 import {BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
-import { template } from '@angular/core/src/render3';
+import { ToastrService } from 'ngx-toastr';
+
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -22,6 +23,7 @@ export class EventosComponent implements OnInit {
   registerForm: FormGroup;
   modoSalvar = 'post';
   bodyDeletarEvento = '';
+  titulo = 'Eventos';
 
   _filtroLista = '';
 
@@ -29,7 +31,8 @@ export class EventosComponent implements OnInit {
     private eventoService: EventoService,
     private modalService: BsModalService,
     private fb: FormBuilder,
-    private localeService: BsLocaleService
+    private localeService: BsLocaleService,
+    private toastr: ToastrService
     ) {
       this.localeService.use('pt-br');
     }
@@ -41,6 +44,12 @@ export class EventosComponent implements OnInit {
       this._filtroLista = value;
       this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos;
     }
+
+    ngOnInit() { // executa antes do HTML estar pronto.
+      this.validation();
+      this.getEventos();
+    }
+
     openModal(template: any) {
       this.registerForm.reset();
       template.show();
@@ -69,44 +78,37 @@ export class EventosComponent implements OnInit {
         () => {
             template.hide();
             this.getEventos();
+             this.toastr.success('Deletado com sucesso.');
           }, error => {
             console.log(error);
+            this.toastr.error(`Erro ao tentar deletar: ${error} `);
           }
       );
     }
 
-
-
-
-
-    ngOnInit() { // executa antes do HTML estar pronto.
-      this.validation();
-      this.getEventos();
-    }
-
     salvarAlteracao(template: any) {
-      if (this.registerForm.valid){
-        if (this.modoSalvar === 'post')
-        {
+      if (this.registerForm.valid) {
+        if (this.modoSalvar === 'post') {
           this.evento = Object.assign({}, this.registerForm.value);
           this.eventoService.postEvento(this.evento).subscribe(
             (novoEvento: Event) => {
               console.log(novoEvento);
               template.hide();
               this.getEventos();
+              this.toastr.success('Inserido com sucesso');
             }, error => {
-              console.log(error );
+              this.toastr.error(`Erro ao tentar inserir: ${error} `);
             }
             );
           } else {
             this.evento = Object.assign({id: this.evento.id}, this.registerForm.value);
-            console.log('antes de atalizar', this.evento);
             this.eventoService.putEvento(this.evento).subscribe(
               () => {
                 template.hide();
                 this.getEventos();
+                this.toastr.success('Editado com sucesso!');
               }, error => {
-                console.log(error );
+                this.toastr.error(`Erro ao tentar Editar: ${error} `);
               }
               );
             }
@@ -125,8 +127,6 @@ export class EventosComponent implements OnInit {
           });
         }
 
-
-
         filtrarEventos(filtrarPor: string): Evento[] {
           filtrarPor = filtrarPor.toLocaleLowerCase();
           return this.eventos.filter(
@@ -142,7 +142,7 @@ export class EventosComponent implements OnInit {
                 console.log('1o response: ', _eventos); // Visualizando o response no F12.
               },
               error => {
-                console.log(error);
+              this.toastr.warning(`Erro ao carregar Eventos: ${error}`);
               });
             }
           }

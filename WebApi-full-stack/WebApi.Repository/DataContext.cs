@@ -1,12 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using WebApi.Domain;
 
 namespace WebApi.Repository
 {
-
     public class DataContext : DbContext
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
@@ -18,7 +14,6 @@ namespace WebApi.Repository
         public DbSet<PalestranteEvento> PalestranteEventos { get; set; }
         public DbSet<Lote> Lotes { get; set; }
         public DbSet<RedeSocial> RedeSociais { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
