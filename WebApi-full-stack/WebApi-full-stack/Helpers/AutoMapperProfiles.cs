@@ -26,6 +26,7 @@ namespace WebApi_full_stack.Helpers
 
 
             CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<User, UserLoginDto>().ReverseMap();
         }
     }
 }
