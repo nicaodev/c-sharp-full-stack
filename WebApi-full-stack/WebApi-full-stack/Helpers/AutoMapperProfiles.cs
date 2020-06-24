@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System.Linq;
 using WebApi.Domain;
+using WebApi.Domain.Identity;
 using WebApi_full_stack.Dtos;
 
 namespace WebApi_full_stack.Helpers
@@ -22,6 +23,10 @@ namespace WebApi_full_stack.Helpers
                 }).ReverseMap();
             CreateMap<Lote, LoteDto>().ReverseMap();
             CreateMap<RedeSocial, RedeSocialDto>().ReverseMap();
+
+
+            CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<User, UserLoginDto>().ReverseMap();
         }
     }
 }
