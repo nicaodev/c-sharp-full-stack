@@ -21,17 +21,23 @@ import { ContatosComponent } from './contatos/contatos.component';
 import { TituloComponent  } from './shared/titulo/titulo.component';
 // Pipes
 import { DateTimeFormatPipePipe } from './helpers/dateTimeFormatPipe.pipe';
+import { UserComponent } from './user/user.component';
+import { LoginComponent } from './user/login/login.component';
+import { RegistrationComponent } from './user/registration/registration.component';
 
 @NgModule({
    declarations: [
       AppComponent,
       EventosComponent,
       NavComponent,
-      DateTimeFormatPipePipe, // Pipespersonalizado
+      DateTimeFormatPipePipe,
       PalestrantesComponent,
       DashboardComponent,
       ContatosComponent,
-      TituloComponent
+      TituloComponent,
+      UserComponent,
+      LoginComponent,
+      RegistrationComponent
    ],
    imports: [
       BrowserModule,
@@ -41,7 +47,7 @@ import { DateTimeFormatPipePipe } from './helpers/dateTimeFormatPipe.pipe';
       ModalModule.forRoot(),
       BsDatepickerModule.forRoot(),
       ReactiveFormsModule,
-      HttpClientModule, // pararequisições na webApi
+      HttpClientModule,
       FormsModule,
       BrowserAnimationsModule,
       ToastrModule.forRoot()
