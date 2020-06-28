@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Domain;
 using WebApi.Repository;
@@ -103,9 +105,31 @@ namespace WebApi_full_stack.Controllers
         {
             try
             {
+                var idLotes = new List<int>();
+                var idRedesSociais = new List<int>();
+
+                model.Lotes.ForEach(item => idLotes.Add(item.Id));
+                model.RedesSociais.ForEach(item => idRedesSociais.Add(item.Id));
+
                 var evento = await _repo.GetAllEventoAsyncId(EventoId, false);
                 if (evento == null)
                     return NotFound();
+
+                var lotes = evento.Lotes.Where(
+                    lote => !idLotes.Contains(lote.Id))
+                    .ToArray();
+
+                var redesSociais = evento.RedesSociais.Where(
+                    rede => !idRedesSociais.Contains(rede.Id))
+                    .ToArray();
+
+                if (lotes.Length > 0)
+                    _repo.DeleteRange(lotes);
+                    
+
+                if (redesSociais.Length > 0)
+                    _repo.DeleteRange(redesSociais);
+
 
                 _mapper.Map(model, evento); // match model com evento(encontrado).
 
