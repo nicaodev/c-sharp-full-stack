@@ -22,10 +22,12 @@ export class NavComponent implements OnInit {
     }
 
     entrar() {
-      // localStorage.removeItem('token');
       this.router.navigate(['/user/login']);
     }
 
+    showMenu(){
+      return this.router.url !== '/user/login';
+    }
 
     logout() {
       localStorage.removeItem('token');
