@@ -20,10 +20,10 @@ export class AuthInterceptor implements HttpInterceptor {
       });
       return next.handle(cloneReq).pipe(
         tap(
-          succ => {},
+          succ => { },
           err => {
             if (err.status === 401) {
-              this.router.navigateByUrl('url/login');
+              this.router.navigateByUrl('user/login');
             }
           }
           )

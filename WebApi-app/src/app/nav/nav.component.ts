@@ -25,6 +25,9 @@ export class NavComponent implements OnInit {
       this.router.navigate(['/user/login']);
     }
 
+    showMenu(){
+      return this.router.url !== '/user/login';
+    }
 
     logout() {
       localStorage.removeItem('token');
