@@ -33,6 +33,9 @@ export class AuthService {
 
     logado() {
       const token = localStorage.getItem('token');
+      if (this.jwtHelper.isTokenExpired(token) && token !== null) {
+        localStorage.removeItem('token');
+      }
       return !this.jwtHelper.isTokenExpired(token);
     }
   }

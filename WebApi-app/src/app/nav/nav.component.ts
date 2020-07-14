@@ -22,6 +22,7 @@ export class NavComponent implements OnInit {
     }
 
     entrar() {
+      // localStorage.removeItem('token');
       this.router.navigate(['/user/login']);
     }
 
